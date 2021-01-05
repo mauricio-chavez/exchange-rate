@@ -1,0 +1,17 @@
+<header>
+  <h1>Exchange Rate</h1>
+  <p>Base: {{ currency }}</p>
+</header>
+
+<section>
+  <label for="selectedCurrency">Cambiar RATE: </label>
+  <input type="text" [(ngModel)]="selectedCurrency" id="selectedCurrency" />
+  <button (click)="getRates()">Consultar</button>
+</section>
+
+
+<section>
+  <ul>
+    <li *ngFor="let rate of rates">{{ rate.rate }} - {{ rate.value }}</li>
+  </ul>
+</section>
