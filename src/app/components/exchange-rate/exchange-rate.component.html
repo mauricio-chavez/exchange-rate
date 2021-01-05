@@ -1,17 +1,25 @@
-<header>
-  <h1>Exchange Rate</h1>
-  <p>Base: {{ currency }}</p>
-</header>
-
 <section>
-  <label for="selectedCurrency">Cambiar RATE: </label>
-  <input type="text" [(ngModel)]="selectedCurrency" id="selectedCurrency" />
-  <button (click)="getRates()">Consultar</button>
-</section>
+  <header>
+    <h1>Exchange Rate</h1>
+    <p>Base: {{ currency }}</p>
+  </header>
 
+  <form (ngSubmit)="getRates()">
+    <p><label>Cambiar RATE</label></p>
+    <p><input type="text" [(ngModel)]="currency" name="currency" /></p>
+    <p><button>Consultar</button></p>
+  </form>
 
-<section>
-  <ul>
-    <li *ngFor="let rate of rates">{{ rate.rate }} - {{ rate.value }}</li>
-  </ul>
+  <main>
+    <table>
+      <tr class="table-head">
+        <th>Rate</th>
+        <th>Value</th>
+      </tr>
+      <tr *ngFor="let rate of rates">
+        <td>{{ rate.currency }}</td>
+        <td>{{ rate.value }}</td>
+      </tr>
+    </table>
+  </main>
 </section>

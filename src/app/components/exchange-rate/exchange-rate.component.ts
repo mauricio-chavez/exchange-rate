@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ExchangeRateService } from '../../services/exchange-rate.service';
-import { Rate } from '../../models/Rate';
+import { ApiService } from '../../_services/api.service';
 
 @Component({
   selector: 'app-exchange-rate',
@@ -9,31 +8,35 @@ import { Rate } from '../../models/Rate';
 })
 export class ExchangeRateComponent implements OnInit {
 
-  rates: Rate[];
+  rates: object[];
   currency = 'MXN';
-  selectedCurrency = this.currency;
 
-  constructor(private exchangeRatingService: ExchangeRateService) { }
+  constructor(private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.getRates();
   }
 
   getRates(): void {
-    this.exchangeRatingService.getCurrencies(this.selectedCurrency)
+    this.apiService.getRates(this.currency)
       .subscribe(
-        (exchangeRate) => {
-          this.currency = exchangeRate.base;
-          const rates = Object.keys(exchangeRate.rates);
-          this.rates = rates.map(rate => ({
-            rate,
-            value: exchangeRate.rates[rate]
-          }));
+        (response) => {
+          const rates = [];
+
+          // tslint:disable-next-line:forin
+          for (const rate in response.rates) {
+            rates.push({
+              currency: rate,
+              value: response.rates[rate]
+            });
+          }
+
+          this.rates = rates;
         },
-        (() => {
+        () => {
           this.rates = [];
-          alert(`El valor para rate "${this.selectedCurrency}" no es válido`);
-        })
+        }
         );
   }
+
 }
